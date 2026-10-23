@@ -2,12 +2,14 @@
 #  Mon premier site Web avec Flask
 # ---------------------------------------------------------------
 
-from flask import Flask, render_template, request, redirect, abort
+from flask import Flask, render_template, request, redirect, abort, jsonify
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 app = Flask(__name__)
 
 # ---------------------------------------------------------------
-#  Exercices précédents (Routes de base et templates)
+#  Exercices précédents
 # ---------------------------------------------------------------
 
 @app.get("/")
@@ -27,18 +29,12 @@ def presentation():
 def loisirs():
     return "J'aime la musculation, la photographie urbaine dans les rues de Paris et gérer ma marque de streetwear."
 
-# ---------------------------------------------------------------
-#  Exercice 7 : Informations dans l'URL
-# ---------------------------------------------------------------
-
 @app.get("/bonjour/<prenom>")
 def bonjour(prenom):
-    # Utilise le template pour se protéger des injections (XSS)
     return render_template("bonjour.html", prenom=prenom)
 
 @app.get("/calcul")
 def calcul():
-    # Récupération sécurisée des paramètres avec gestion d'erreur
     try:
         a = int(request.args.get("a", 0))
         b = int(request.args.get("b", 0))
@@ -46,7 +42,6 @@ def calcul():
         return "Erreur : Veuillez entrer uniquement des nombres entiers."
 
     op = request.args.get("op", "plus")
-
     if op == "fois":
         resultat = a * b
         symbole = "*"
@@ -58,10 +53,6 @@ def calcul():
         symbole = "+"
 
     return f"{a} {symbole} {b} = {resultat}"
-
-# ---------------------------------------------------------------
-#  Exercice 8 : Les formulaires (GET et POST)
-# ---------------------------------------------------------------
 
 @app.get("/formulaire")
 def formulaire():
@@ -80,33 +71,21 @@ def salut():
         
     return f"<h1 style='color: {couleur};'>Bonjour {prenom}, qui vient de {ville} ! (reçu en {request.method})</h1>"
 
-# ---------------------------------------------------------------
-#  Exercice 9 : Les codes de statut et d'erreur
-# ---------------------------------------------------------------
-
 @app.get("/home")
 def home():
-    # Redirection vers la page d'accueil
     return redirect("/")
 
 @app.get("/secret")
 def secret():
-    # Bloque l'accès avec une erreur 403
     abort(403)
 
 @app.errorhandler(404)
 def page_introuvable(erreur):
-    # Personnalisation de l'erreur 404 (Page non trouvée)
     return render_template("404.html"), 404
 
 @app.errorhandler(403)
 def acces_interdit(erreur):
-    # Personnalisation de l'erreur 403 (Accès refusé)
     return render_template("403.html"), 403
-
-# ---------------------------------------------------------------
-#  Exercice 10 : Ce que le serveur sait de vous
-# ---------------------------------------------------------------
 
 @app.get("/moi")
 def moi():
@@ -117,6 +96,23 @@ def moi():
         langues=request.headers.get("Accept-Language"),
         entetes=request.headers,
     )
+
+# ---------------------------------------------------------------
+#  Exercice 11 : Le Web des machines (API et JSON)
+# ---------------------------------------------------------------
+
+@app.get("/api/heure")
+def api_heure():
+    maintenant = datetime.now(ZoneInfo("Europe/Paris"))
+    return jsonify({
+        "heure": maintenant.strftime("%H:%M:%S"),
+        "date": maintenant.strftime("%d/%m/%Y"),
+        "message": "Bonjour depuis mon API !",
+    })
+
+@app.get("/horloge")
+def horloge():
+    return render_template("horloge.html")
 
 # ---------------------------------------------------------------
 #  Lancement de l'application
