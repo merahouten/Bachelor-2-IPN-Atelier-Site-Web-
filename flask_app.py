@@ -105,6 +105,20 @@ def acces_interdit(erreur):
     return render_template("403.html"), 403
 
 # ---------------------------------------------------------------
+#  Exercice 10 : Ce que le serveur sait de vous
+# ---------------------------------------------------------------
+
+@app.get("/moi")
+def moi():
+    return render_template(
+        "moi.html",
+        ip=request.headers.get("X-Real-IP", request.remote_addr),
+        navigateur=request.headers.get("User-Agent"),
+        langues=request.headers.get("Accept-Language"),
+        entetes=request.headers,
+    )
+
+# ---------------------------------------------------------------
 #  Lancement de l'application
 # ---------------------------------------------------------------
 if __name__ == "__main__":
