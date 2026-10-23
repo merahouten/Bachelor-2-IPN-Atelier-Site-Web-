@@ -13,19 +13,26 @@ from flask import Flask
 app = Flask(__name__)
 
 
+
 # Une "route" associe une adresse (URL) à une fonction Python.
 # Ici : quand quelqu'un visite la page d'accueil "/",
 # Flask exécute la fonction accueil() et renvoie son résultat au navigateur.
 @app.get("/")
 def accueil():
-   return "Bienvenue sur le site de Léa 🚀"
+   return "Bienvenue sur le site de Mehdi 🚀"
 
 
 # ---------------------------------------------------------------
 #  Ajoutez vos nouvelles routes ci-dessous 👇
 # ---------------------------------------------------------------
 
+@app.get("/presentation")
+def presentation():
+    return "Je m'appelle Mehdi et je suis étudiant en informatique à l'ISEP."
 
+@app.get("/loisirs")
+def loisirs():
+    return "J'aime la musculation, la photographie urbaine dans les rues de Paris et gérer ma marque de streetwear."
 
 # ---------------------------------------------------------------
 #  Ne pas modifier : utile seulement pour lancer le site
