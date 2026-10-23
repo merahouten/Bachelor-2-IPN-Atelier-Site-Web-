@@ -2,9 +2,13 @@
 #  Mon premier site Web avec Flask
 # ---------------------------------------------------------------
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, abort
 
 app = Flask(__name__)
+
+# ---------------------------------------------------------------
+#  Exercices précédents (Routes de base et templates)
+# ---------------------------------------------------------------
 
 @app.get("/")
 def accueil():
@@ -75,6 +79,30 @@ def salut():
         couleur = request.args.get("couleur", "black")
         
     return f"<h1 style='color: {couleur};'>Bonjour {prenom}, qui vient de {ville} ! (reçu en {request.method})</h1>"
+
+# ---------------------------------------------------------------
+#  Exercice 9 : Les codes de statut et d'erreur
+# ---------------------------------------------------------------
+
+@app.get("/home")
+def home():
+    # Redirection vers la page d'accueil
+    return redirect("/")
+
+@app.get("/secret")
+def secret():
+    # Bloque l'accès avec une erreur 403
+    abort(403)
+
+@app.errorhandler(404)
+def page_introuvable(erreur):
+    # Personnalisation de l'erreur 404 (Page non trouvée)
+    return render_template("404.html"), 404
+
+@app.errorhandler(403)
+def acces_interdit(erreur):
+    # Personnalisation de l'erreur 403 (Accès refusé)
+    return render_template("403.html"), 403
 
 # ---------------------------------------------------------------
 #  Lancement de l'application
