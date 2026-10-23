@@ -28,8 +28,17 @@ def accueil():
 
 @app.get("/presentation")
 def presentation():
-    return "Je m'appelle Mehdi et je suis étudiant en informatique à l'ISEP."
-
+    return """
+    <h1>Mehdi ERAHOUTEN</h1>
+    <p>Je suis étudiant en <strong>Bachelor Informatique et Projets Numériques à l'ISEP</strong>.</p>
+    <h2>Ce que j'aime</h2>
+    <ul>
+        <li>La musculation</li>
+        <li>La photographie urbaine dans Paris</li>
+        <li>Le développement de ma marque de streetwear (The.RifBrand)</li>
+    </ul>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" width="100">
+    """
 @app.get("/loisirs")
 def loisirs():
     return "J'aime la musculation, la photographie urbaine dans les rues de Paris et gérer ma marque de streetwear."
