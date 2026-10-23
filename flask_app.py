@@ -56,6 +56,27 @@ def calcul():
     return f"{a} {symbole} {b} = {resultat}"
 
 # ---------------------------------------------------------------
+#  Exercice 8 : Les formulaires (GET et POST)
+# ---------------------------------------------------------------
+
+@app.get("/formulaire")
+def formulaire():
+    return render_template("formulaire.html")
+
+@app.route("/salut", methods=["GET", "POST"])
+def salut():
+    if request.method == "POST":
+        prenom = request.form.get("prenom", "inconnu")
+        ville = request.form.get("ville", "nulle part")
+        couleur = request.form.get("couleur", "black")
+    else:
+        prenom = request.args.get("prenom", "inconnu")
+        ville = request.args.get("ville", "nulle part")
+        couleur = request.args.get("couleur", "black")
+        
+    return f"<h1 style='color: {couleur};'>Bonjour {prenom}, qui vient de {ville} ! (reçu en {request.method})</h1>"
+
+# ---------------------------------------------------------------
 #  Lancement de l'application
 # ---------------------------------------------------------------
 if __name__ == "__main__":
